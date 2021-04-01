@@ -10,7 +10,7 @@ void test_crop() {
 
     for (int i = 0; i < 1920; ++i) {
         for (int j = 0; j < 1080; ++j) {
-            img.set(i, j, (i*j) % 256);
+            img.set(i, j, (byte_t)((i*j) & 0xFF));
         }
     }
 

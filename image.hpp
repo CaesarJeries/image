@@ -17,45 +17,45 @@ class Image {
         private:
         std::string m_msg;
         public:
-        InvalidResolutionException(const std::string& msg): m_msg(msg) {}
+        InvalidResolutionException(const std::string& msg = ""): m_msg(msg) {}
     };
 
     class OutOfBoundsException : public std::exception {
         private:
         std::string m_msg;
         public:
-        OutOfBoundsException(const std::string& msg): m_msg(msg) {}
+        OutOfBoundsException(const std::string& msg = ""): m_msg(msg) {}
     };
 
     private:
     
-    int m_width;
     int m_height;
+    int m_width;
     byte_t* m_data;
 
     byte_t* copy_data() const;
     int get_index(int r, int c) const;
     
-    static void check_bounds(int r, int c);
-    static void check_resolution(int w, int h);
+    void check_bounds(int r, int c) const;
+    static void check_resolution(int h, int w);
 
     public:
     
-    static constexpr int S_MIN_WIDTH = 24;
-    static constexpr int S_MAX_WIDTH = 1080;
-    
     static constexpr int S_MIN_HEIGHT = 24;
     static constexpr int S_MAX_HEIGHT = 1920;
+    
+    static constexpr int S_MIN_WIDTH = 24;
+    static constexpr int S_MAX_WIDTH = 1080;
 
-    Image(int w = S_MIN_WIDTH,
-          int h = S_MIN_HEIGHT);
+    Image(int h = S_MIN_HEIGHT,
+          int w = S_MIN_WIDTH);
     
     ~Image();
 
     int get_width() const;
     int get_height() const;
 
-    Image crop(int r, int c, int w, int h) const;
+    Image crop(int r, int c, int h, int w) const;
 
     byte_t get(int r, int c) const;
     void set(int r, int c, byte_t value);

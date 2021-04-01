@@ -10,11 +10,11 @@
 namespace caesar {
 
 
-Image::Image(int w, int h):
-m_width(w),
+Image::Image(int h, int w):
 m_height(h),
+m_width(w),
 m_data(nullptr) {
-    m_data = new byte_t[w * h];
+    m_data = new byte_t[h * w];
 }
 
 
@@ -22,27 +22,37 @@ Image::~Image() {
     delete[] m_data;
 }
 
+void Image::check_bounds(int r, int c) const {
+    if (r < 0 || r >= m_height) throw OutOfBoundsException();
+    if (c < 0 || c >= m_width) throw OutOfBoundsException();
+}
+
+
+void Image::check_resolution(int h, int w) {
+    if (h < S_MIN_HEIGHT || h > S_MAX_HEIGHT) throw InvalidResolutionException();
+    if (w < S_MIN_WIDTH || w > S_MAX_WIDTH) throw InvalidResolutionException();
+}
 
 byte_t* Image::copy_data() const {
-    byte_t* copy = new byte_t[m_width * m_height];
-    memcpy(copy, m_data, m_width * m_height);
+    byte_t* copy = new byte_t[m_height * m_width];
+    memcpy(copy, m_data, m_height * m_width);
 
     return copy;
 }
 
 
 Image::Image(const Image& other):
+m_height(other.m_height),
 m_width(other.m_width),
-m_height(other.m_height) {
-    m_data = other.copy_data();
-}
+m_data(other.copy_data())
+{}
 
 
 Image& Image::operator=(const Image& other) {
     if (this != &other) {
         byte_t* copy_address = nullptr;
         try {
-            copy_address = new byte_t[other.m_width * other.m_height];
+            copy_address = new byte_t[other.m_height * other.m_width ];
 
             delete[] m_data;
             m_data = copy_address;
@@ -58,18 +68,25 @@ Image& Image::operator=(const Image& other) {
 
 
 Image::Image(Image&& other):
-m_width(other.m_width),
 m_height(other.m_height),
-m_data(std::move(other.m_data)) {}
+m_width(other.m_width){
+    m_data = other.m_data;
+    other.m_data = nullptr;
+    other.m_height = 0;
+    other.m_width = 0;
+}
 
 
 Image& Image::operator=(Image&& other) {
     if (this != &other) {
         delete[] m_data;
-        m_data = std::move(other.m_data);
-
-        m_width = other.m_width;
+        m_data = other.m_data;
         m_height = other.m_height;
+        m_width = other.m_width;
+
+        other.m_data = nullptr;
+        other.m_height = 0;
+        other.m_width = 0;
     }
 
     return *this;
@@ -82,6 +99,8 @@ int Image::get_index(int r, int c) const {
 
 
 byte_t Image::get(int r, int c) const {
+    check_bounds(r, c);
+
     const int index = get_index(r, c);
     return m_data[index];
 }
@@ -93,8 +112,8 @@ void Image::set(int r, int c, byte_t value) {
 }
 
 
-Image Image::crop(int r, int c, int w, int h) const {
-    Image sub_image(w, h);
+Image Image::crop(int r, int c, int h, int w) const {
+    Image sub_image(h, w);
 
     int sub_img_itr = 0;
     for (int row_itr = r; row_itr < (r + h); ++row_itr) {
