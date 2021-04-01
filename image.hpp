@@ -65,6 +65,9 @@ class Image {
 
     Image& operator=(const Image& other);
     Image(const Image& other);
+    
+    Image operator+(const Image& other) const;
+    Image operator-(const Image& other) const;
 
 }; // class Image
 
