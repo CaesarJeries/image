@@ -38,13 +38,11 @@ void draw_image(const Image& img) {
 
     bool quit = false;
     SDL_Event event;
-    while (!quit)
-    {
+    while (!quit) {
         SDL_UpdateTexture(texture, NULL, pixels, img.get_width() * sizeof(Uint32));
         SDL_WaitEvent(&event);
  
-        switch (event.type)
-        {
+        switch (event.type) {
             case SDL_QUIT:
                 quit = true;
                 break;
@@ -69,7 +67,7 @@ int main() {
     for (int i = 0; i < img.get_height(); ++i) {
         for (int j = 0; j < img.get_width(); ++j) {
             // img.set(i, j, (byte_t)((i * j) & -0xFF));
-            img.set(i, j, 255);
+            img.set(i, j, 128);
         }
     }
 
