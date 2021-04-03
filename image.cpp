@@ -1,7 +1,7 @@
 #include <iostream>
 #include <utility>
 #include <memory>
-#include <cstring> // memcpy
+#include <cstring> // memcpy, strncmp
 
 #include "image.hpp"
 
@@ -24,12 +24,14 @@ Image::~Image() {
 }
 
 void Image::check_bounds(int r, int c) const {
+    // todo: add error message
     if (r < 0 || r >= m_height) throw OutOfBoundsException();
     if (c < 0 || c >= m_width) throw OutOfBoundsException();
 }
 
 
 void Image::check_resolution(int h, int w) {
+    // todo: add error message
     if (h < S_MIN_HEIGHT || h > S_MAX_HEIGHT) throw InvalidResolutionException();
     if (w < S_MIN_WIDTH || w > S_MAX_WIDTH) throw InvalidResolutionException();
 }
@@ -179,5 +181,16 @@ Image Image::operator-(const Image& other) const {
     return result;
 }
 
+
+bool Image::operator==(const Image& other) const {
+    return 0 == strncmp(reinterpret_cast<const char*>(m_data),
+                        reinterpret_cast<const char*>(other.m_data),
+                        m_height * m_width);
+}
+
+
+bool Image::operator!=(const Image& other) const {
+    return !(*this == other);
+}
 
 }

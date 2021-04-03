@@ -69,6 +69,9 @@ class Image {
     Image operator+(const Image& other) const;
     Image operator-(const Image& other) const;
 
+    bool operator==(const Image& other) const;
+    bool operator!=(const Image& other) const;
+
 }; // class Image
 
 }
