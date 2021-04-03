@@ -34,6 +34,7 @@ void Image::check_resolution(int h, int w) {
     if (w < S_MIN_WIDTH || w > S_MAX_WIDTH) throw InvalidResolutionException();
 }
 
+
 byte_t* Image::copy_data() const {
     byte_t* copy = new byte_t[m_height * m_width];
     memcpy(copy, m_data, m_height * m_width);
@@ -58,7 +59,6 @@ Image& Image::operator=(const Image& other) {
             delete[] m_data;
             m_data = copy_address;
 
-            return *this;
         } catch (const std::bad_alloc& e) {
             std::cerr << "Allocation failed: " << e.what() << std::endl;
         }
@@ -115,6 +115,16 @@ void Image::set(int r, int c, byte_t value) {
 }
 
 
+int Image::get_height() const {
+    return m_height;
+}
+
+
+int Image::get_width() const {
+    return m_width;
+}
+
+
 Image Image::crop(int r, int c, int h, int w) const {
     check_bounds(r, c);
     check_bounds(r + h - 1, c + w - 1);
@@ -140,6 +150,7 @@ Image Image::operator+(const Image& other) const {
         for (int col = 0; col < m_width; ++col) {
             const int index = get_index(row, col);
             byte_t cell = m_data[index];
+            
             result.set(row, col, cell + other.m_data[index]);
         }
     }
@@ -154,6 +165,7 @@ Image Image::operator-(const Image& other) const {
         for (int col = 0; col < m_width; ++col) {
             const int index = get_index(row, col);
             const byte_t cell = m_data[index];
+            
             if (other.m_data[index] > cell) {
                 result.set(row, col, 0);
             }

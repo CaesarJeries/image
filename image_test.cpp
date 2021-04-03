@@ -15,7 +15,6 @@ void test_crop() {
     }
 
     Image sub_image = img.crop(300, 300, 500, 500);
-
 }
 
 
