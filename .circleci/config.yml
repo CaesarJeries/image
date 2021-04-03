@@ -3,8 +3,9 @@ jobs:
   build:
     docker:
       - image: alpine:3.7
+    
     steps:
       - run:
-        name: Sample
-        command: |
-          echo 'Hello world'
+          name: Sample
+          command: |
+            echo 'Hello world'
