@@ -1,1 +1,5 @@
 test
+CMakeFiles
+CMakeCache.txt
+Makefile
+*.cmake
