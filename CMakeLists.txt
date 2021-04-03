@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include_directories("$ENV{GIT_TOP}/cpp/utils")
 
 add_custom_target(draw
+                  BYPRODUCTS draw
                   COMMAND g++ draw.cpp -o draw -lSDL2 -L. -limage -I$ENV{HOME}/git/cpp/utils -ldl -Wl,-rpath .
                   VERBATIM
                   DEPENDS draw.cpp libimage.so)
