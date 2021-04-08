@@ -3,6 +3,7 @@
 
 #include <exception>
 #include <string>
+#include <vector>
 
 #include "utilities.hpp"
 
@@ -71,6 +72,9 @@ class Image {
 
     bool operator==(const Image& other) const;
     bool operator!=(const Image& other) const;
+
+
+    std::vector<byte_t> get_data() const;
 
 }; // class Image
 

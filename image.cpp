@@ -193,4 +193,8 @@ bool Image::operator!=(const Image& other) const {
     return !(*this == other);
 }
 
+std::vector<byte_t> Image::get_data() const {
+    return std::vector<byte_t> {m_data, m_data + m_height*m_width};
+}
+
 }
