@@ -76,6 +76,8 @@ class Image {
 
     std::vector<byte_t> get_data() const;
 
+    void draw() const;
+
 }; // class Image
 
 }

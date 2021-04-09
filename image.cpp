@@ -3,6 +3,10 @@
 #include <memory>
 #include <cstring> // memcpy, strncmp
 
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui.hpp>
+
 #include "image.hpp"
 
 
@@ -194,7 +198,15 @@ bool Image::operator!=(const Image& other) const {
 }
 
 std::vector<byte_t> Image::get_data() const {
-    return std::vector<byte_t> {m_data, m_data + m_height*m_width};
+    std::cout << "Size" << m_height*m_width << std::endl;
+    return std::vector<byte_t> (m_data, m_data + m_height*m_width);
+}
+
+
+void Image::draw() const {
+    cv::Mat mat(m_height, m_width, CV_8U, &m_data[0]);
+    cv::imshow("window", mat);
+    cv::waitKey(0);
 }
 
 }
