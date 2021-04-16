@@ -1,6 +1,7 @@
 #include <iostream>
 #include <utility>
 #include <memory>
+#include <sstream>
 #include <cstring> // memcpy, strncmp
 
 #include <opencv2/imgcodecs.hpp>
@@ -28,16 +29,31 @@ Image::~Image() {
 }
 
 void Image::check_bounds(int r, int c) const {
-    // todo: add error message
-    if (r < 0 || r >= m_height) throw OutOfBoundsException();
-    if (c < 0 || c >= m_width) throw OutOfBoundsException();
+    if (r < 0 || r >= m_height) {
+        std::stringstream ss;
+        ss << "Row index is out of bounds: " << r << ". It should be in the range [0, " << m_height - 1 << "]";
+        throw OutOfBoundsException(ss.str());
+    }
+
+    if (c < 0 || c >= m_width) throw OutOfBoundsException() {
+        std::stringstream ss;
+        ss << "Column index is out of bounds: " << c << ". It should be in the range [0, " << m_width - 1 << "]";
+    }
 }
 
 
 void Image::check_resolution(int h, int w) {
-    // todo: add error message
-    if (h < S_MIN_HEIGHT || h > S_MAX_HEIGHT) throw InvalidResolutionException();
-    if (w < S_MIN_WIDTH || w > S_MAX_WIDTH) throw InvalidResolutionException();
+    if (h < S_MIN_HEIGHT || h > S_MAX_HEIGHT) {
+        std::stringstream ss;
+        ss << "Invalid height: " << h << ". Value must be in the range [" << S_MIN_HEIGHT << ", " << S_MAX_HEIGHT << "]";
+        throw InvalidResolutionException(ss.str());
+    }
+
+    if (w < S_MIN_WIDTH || w > S_MAX_WIDTH) {
+        std::stringstream ss;
+        ss << "Invalid width: " << w << ". Value must be in the range [" << S_MIN_WIDTH << ", " << S_MAX_WIDTH << "]";
+        throw InvalidResolutionException(ss.str());
+    }
 }
 
 
