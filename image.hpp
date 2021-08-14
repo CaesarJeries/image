@@ -32,7 +32,7 @@ class Image {
     
     int m_height;
     int m_width;
-    byte_t* m_data;
+    byte_t* m_data; // todo: replace with unique_ptr
 
     byte_t* copy_data() const;
     int get_index(int r, int c) const;
